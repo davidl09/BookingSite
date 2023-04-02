@@ -41,21 +41,7 @@ def select_appt():
             [t for t in timeslots if appointment.start_time <= t < appointment.end_time])
 
     # Generate a list of weeks and days
-    """
-    month = []
-    week = []
-    for date in dates:
-        day = {
-            'number': date.day,
-            'timeslots': [t for t in timeslots if t.date() == date and t not in busy_timeslots]
-        }
-        week.append(day)
-        if date.weekday() == 5:
-            month.append(week)
-            week = []
-    if week:
-        month.append(week)
-    """
+
 
     return render_template('calendar.html', timeslots=timeslots, busy_timeslots=busy_timeslots)
 
