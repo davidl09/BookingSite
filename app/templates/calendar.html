@@ -70,11 +70,19 @@
   {% for timeslot in timeslots %}
     {% if timeslot not in busy_timeslots %}
       {% set maxslot = maxslot + 1 %}
-      <tr class="appointment-row" style="{{ 'display: none;' if maxslot > 10}}">
-        <td>{{ timeslot.date()|humanize_naturalday() }}</td>
-        <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
-        <td><a href="{{ url_for('book', date_time=to_url(timeslot))}}">Available</a></td>
-      </tr>
+        {% if maxslot > 10 %}
+          <tr class="appointment-row" style="{{ 'display: none;' if maxslot > 10 }}">
+            <td>{{ timeslot.date()|humanize_naturalday() }}</td>
+            <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
+            <td><a href="{{ url_for('book')}}">Available</a></td>
+          </tr>
+        {% else %}
+          <tr class="appointment-row">
+            <td>{{ timeslot.date()|humanize_naturalday() }}</td>
+            <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
+            <td><a href="{{ url_for('book')}}">Available</a></td>
+          </tr>
+        {% endif %}
     {% endif %}
   {% endfor %}
 </table>

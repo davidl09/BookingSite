@@ -21,7 +21,7 @@ def book():
 def select_appt():
     now = datetime.now()
 
-    start_date = now
+    start_date = now + timedelta(days=1)
     end_date = now + timedelta(days=30)
 
     appointments = Appointment.query.filter(Appointment.start_time >= start_date,
@@ -39,8 +39,6 @@ def select_appt():
     for appointment in appointments:
         busy_timeslots.extend(
             [t for t in timeslots if appointment.start_time <= t < appointment.end_time])
-
-    # Generate a list of weeks and days
 
 
     return render_template('calendar.html', timeslots=timeslots, busy_timeslots=busy_timeslots)
