@@ -2,12 +2,29 @@
 
 {% block page_content % } 
 
+<style>
+    div{
+        margin-top: 200px;
+        text-align: center;
+        font-family:'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+    }
+    h3{
+        font-size: medium;
+    }
+</style>
+
 <div>
     <h3>Success! You have booked you appointment!</h3>
     <h4>Your appointment details:</h4>
     <ul>
         <li>
-            Appointment time: {{ }}
+            Appointment time: {{ timeslot.time()|humanize_naturaltime }}
+        </li>
+        <li>
+            Appointment date: {{ timeslot.day()|humanize_naturalday }}
+        </li>
+        <li>
+            Location: *insert location*
         </li>
     </ul>
 </div>
