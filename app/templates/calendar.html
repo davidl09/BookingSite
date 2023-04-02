@@ -12,6 +12,7 @@
     }
     table {
       border-collapse: separate;
+      table-layout: fixed;
       width: 50%;
       margin-top: 10px;
       margin-left: auto;
@@ -20,6 +21,7 @@
     th, td {
       border: 1px solid #ddd;
       padding: 8px;
+      width: 16.66%;
     }
     tr:nth-child(even) {
       background-color: #f2f2f2;
@@ -31,23 +33,76 @@
       text-align: left;
       background-color: rgb(178, 160, 221);
       color: white;
+    }input[type=checkbox] {
+    display: none;
+  }
+  tr:nth-child(n+12) {
+    display: none;
+  }
+  input[type=checkbox]:checked ~ table tr:nth-child(n+12) {
+    display: table-row;
+  }
+  .expand-button {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  .expand-button label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .expand-button label:hover {
+    background-color: #3e8e41;
+  }
+</style>
+<h1>Available Appointments</h1>
+<table id="appointments-table">
+  <tr>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Availability</th>
+  </tr>
+  {% set maxslot = 0 %}
+  {% for timeslot in timeslots %}
+    {% if timeslot not in busy_timeslots %}
+      {% set maxslot = maxslot + 1 %}
+      <tr class="appointment-row" style="{{ 'display: none;' if maxslot > 10}}">
+        <td>{{ timeslot.date()|humanize_naturalday() }}</td>
+        <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
+        <td><a href="{{ url_for('book', date_time=to_url(timeslot))}}">Available</a></td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+</table>
+<div class="expand-button">
+  <button id="expand">Show more appointments</button>
+  <button id="hide" style="display: none">Hide appointments</button>
+</div>
+
+<script>
+var rowsShown = 10;
+document.getElementById("expand").onclick = function() {
+    var rows = document.querySelectorAll("#appointments-table tr.appointment-row");
+    rowsShown = Math.min(rowsShown + 10, rows.length);
+    for (var i = 0; i < rowsShown; i++) {
+        rows[i].style.display = "table-row";
     }
-  </style>
-  <h1>Available Appointments</h1>
-  <table>
-    <tr>
-      <th>Date</th>
-      <th>Time</th>
-      <th>Availability</th>
-    </tr>
-    {% for timeslot in timeslots %}
-    <tr>
-        {% if timeslot not in busy_timeslots %}
-      <td>{{ timeslot.date()|humanize_naturalday() }}</td>
-      <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
-      <td><a href="/appointments/book">Available</a></td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-  </table>
+    if (rowsShown > 10) {
+        document.getElementById("hide").style.display = "inline-block";
+    }
+};
+document.getElementById("hide").onclick = function() {
+    var rows = document.querySelectorAll("#appointments-table tr.appointment-row");
+    for (var i = 10; i < rows.length; i++) {
+        rows[i].style.display = "none";
+    }
+    rowsShown = 10;
+    document.getElementById("hide").style.display = "none";
+};
+</script>
+
 {% endblock %}
