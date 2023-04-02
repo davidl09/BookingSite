@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+  <style>
+    main {
+      padding-top: 200px;
+    }
+    h1 {
+      text-align: center;
+      padding-top: 10px;
+      font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+    }
+    table {
+      border-collapse: separate;
+      width: 50%;
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #ddd;
+    }
+    th {
+      text-align: left;
+      background-color: rgb(178, 160, 221);
+      color: white;
+    }
+  </style>
+  <h1>Available Appointments</h1>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Availability</th>
+    </tr>
+    {% for timeslot in timeslots %}
+    <tr>
+        {% if timeslot not in busy_timeslots %}
+      <td>{{ timeslot.date()|humanize_naturalday() }}</td>
+      <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
+      <td><a href="/appointments/book">Available</a></td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

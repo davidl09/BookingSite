@@ -1,0 +1,65 @@
+{% extends 'bootstrap/base.html' %}
+{% block title %}business name{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <style>
+        /* Add styles for the menu bar */
+        #menu-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: lavender;
+            transition: transform 0.7s;
+        }
+        #menu-bar nav ul li {
+            display: inline-block;
+            padding: 0 10px;
+            font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+        }
+        /* Add styles for hiding the menu bar */
+        .hide-menu-bar {
+            transform: translateY(-100%);
+        }
+        img {
+            max-height: 150px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <!-- Move the header element outside of the block and give it an id of "menu-bar" -->
+    <header id="menu-bar">
+        <img src="/static/images/your_logo_here.png" alt="Your Logo Here">
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/appointments">Book an appointment</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block page_content %}{% endblock %}
+    </main>
+    <!-- Add a script tag to include the JavaScript code for the sliding menu bar -->
+    <script>
+        // Get the menu bar element
+        var menuBar = document.getElementById('menu-bar');
+        // Set a variable to track the last scroll position
+        var lastScrollPosition = 0;
+        // Add an event listener for the scroll event
+        window.addEventListener('scroll', function() {
+            // Get the current scroll position
+            var currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            // Check if the user scrolled down
+            if (currentScrollPosition > lastScrollPosition) {
+                // If the user scrolled down, add the "hide-menu-bar" class to hide the menu bar
+                menuBar.classList.add('hide-menu-bar');
+            } else {
+                // If the user scrolled up, remove the "hide-menu-bar" class to show the menu bar
+                menuBar.classList.remove('hide-menu-bar');
+            }
+            // Update the last scroll position
+            lastScrollPosition = currentScrollPosition;
+        });
+    </script>
+{% endblock %}
