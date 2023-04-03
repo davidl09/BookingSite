@@ -45,7 +45,7 @@ def confirmation():
 def contact():
     return render_template('contact.html')
 
-@app.route('/appointments')
+@app.route('/appointments') #fix this, currently displays busy timeslots as available
 def select_appt():
     now = datetime.now()
 
@@ -59,17 +59,15 @@ def select_appt():
 
     timeslots = [datetime.combine(d, datetime.min.time()) +
                  timedelta(hours=i) for d in dates for i in range(9, 17)]
+    
+    appointment_times = [appointment.start_time for appointment in Appointment.query.filter(Appointment.start_time >= start_date,
+                                            Appointment.end_time <= end_date).all()]
+            
+    for timeslot in timeslots:
+        if timeslot in appointment_times:
+            timeslots.remove(timeslot)
 
-    busy_timeslots = []
-    for appointment in appointments:
-        busy_timeslots.extend(
-            [t for t in timeslots if appointment.start_time <= t < appointment.end_time])
-
-
-    return render_template('calendar.html', timeslots=timeslots, busy_timeslots=busy_timeslots)
+    return render_template('calendar.html', timeslots=timeslots)
 
 
 
-@app.route('/contact')
-def confirm_book(timeslot):
-    return render_template('', timeslot=timeslot)
