@@ -15,6 +15,6 @@ class Appointment(db.Model):
     location = db.Column(db.String(120))
 
     def __repr__(self):
-        return '<Appointment ID: {}, First Name: {}>'.format(self.id, self.first_name)
+        return '<Appointment ID: {}, First Name: {}, Start Time/Date: {}>'.format(self.id, self.first_name, datetime.strftime(self.start_time, "%Y-%m-%d_%H:%M"))
     
 
