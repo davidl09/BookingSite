@@ -7,6 +7,7 @@ import humanize
 
 
 @app.route('/')
+@app.route('/home')
 def hello():
     return render_template('base.html')
 
@@ -15,7 +16,34 @@ def book():
     form = RegistrationForm()
     if form.validate_on_submit():
         appointment = Appointment()
+        appointment.first_name = str(form.first_name)
+        appointment.last_name = str(form.last_name)
+        appointment.email = str(form.email)
+        appointment.phone_number = str(form.phone_number)
+        start_time=request.args.get('start_datetime')
+        appointment.start_time = datetime.strptime(start_time, '%Y-%m-%d_%H:%M')
+        appointment.end_time = (datetime.strptime(start_time, '%Y-%m-%d_%H:%M') + timedelta(hours=1))
+        appointment.location = 'insert location'
+        db.session.add(appointment)
+        db.session.commit()
+        return redirect(url_for('confirmation', 
+                                start_datetime=start_time, 
+                                location=appointment.location, 
+                                email=form.email))
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"Error in the {getattr(form, field).label.text} field - {error}")
     return render_template('book_apt.html', form=form)
+
+@app.route('/appointments/confirmation')
+def confirmation():
+    return render_template('confirmation.html', timeslot=datetime.strptime(request.args.get('start_datetime'), '%Y-%m-%d_%H:%M'), 
+                           location=request.args.get('location'), email=request.args.get('email'))
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @app.route('/appointments')
 def select_appt():
@@ -27,14 +55,11 @@ def select_appt():
     appointments = Appointment.query.filter(Appointment.start_time >= start_date,
                                             Appointment.end_time <= end_date).all()
 
-    # Generate a list of dates
     dates = [start_date + timedelta(days=i) for i in range(0, 31)]
 
-    # Generate a list of timeslots
     timeslots = [datetime.combine(d, datetime.min.time()) +
                  timedelta(hours=i) for d in dates for i in range(9, 17)]
 
-    # Generate a list of busy timeslots
     busy_timeslots = []
     for appointment in appointments:
         busy_timeslots.extend(
@@ -46,5 +71,5 @@ def select_appt():
 
 
 @app.route('/contact')
-def confirm_book():
-    return 'Apointment confirmed'
+def confirm_book(timeslot):
+    return render_template('', timeslot=timeslot)
