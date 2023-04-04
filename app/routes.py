@@ -1,4 +1,5 @@
 from flask import render_template, redirect, flash, url_for, request
+from sqlalchemy import and_, or_
 from app import app, db
 from app.models import Appointment
 from app.forms import RegistrationForm
@@ -45,29 +46,21 @@ def confirmation():
 def contact():
     return render_template('contact.html')
 
-@app.route('/appointments') #fix this, currently displays busy timeslots as available
+@app.route('/appointments')
 def select_appt():
-    now = datetime.now()
-
-    start_date = now + timedelta(days=1)
-    end_date = now + timedelta(days=30)
-
-    appointments = Appointment.query.filter(Appointment.start_time >= start_date,
-                                            Appointment.end_time <= end_date).all()
-
-    dates = [start_date + timedelta(days=i) for i in range(0, 31)]
-
-    timeslots = [datetime.combine(d, datetime.min.time()) +
-                 timedelta(hours=i) for d in dates for i in range(9, 17)]
     
-    appointment_times = [appointment.start_time for appointment in Appointment.query.filter(Appointment.start_time >= start_date,
-                                            Appointment.end_time <= end_date).all()]
-            
-    for timeslot in timeslots:
-        if timeslot in appointment_times:
-            timeslots.remove(timeslot)
+    now = datetime.now()
+    start_date = datetime(now.year, now.month, now.day, 9, 0, 0)
+    end_date = start_date + timedelta(days=30)
+
+    appointments = db.session.query(Appointment).all()
+
+    timeslots = []
+    for i in range(1, timedelta(start_date.day, end_date.day).days): #fix this, not filtering appointments properly
+        for j in range(8):
+            if db.session.query(Appointment).filter(and_(Appointment.start_time < start_date + timedelta(days=i, hours=j+1), Appointment.start_time > start_date + timedelta(days=i, hours=j-1))).all() != None:
+                pass
+            else:
+                timeslots.append(start_date + timedelta(days=i, hours=j))
 
     return render_template('calendar.html', timeslots=timeslots)
-
-
-
