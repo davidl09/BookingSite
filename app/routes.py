@@ -3,7 +3,7 @@ from sqlalchemy import and_, or_
 from app import app, db
 from app.models import Appointment
 from app.forms import RegistrationForm
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import humanize
 
 
@@ -48,7 +48,10 @@ def contact():
 
 @app.route('/appointments')
 def select_appt():
-    
+    now = datetime.now()
+    weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    daytimes = [datetime.strftime(datetime.combine(now, time(hour=(9+i//4), minute=(15*(i%4)))), "%H:%M") for i in range(32)]
+    """
     now = datetime.now()
     start_date = datetime(now.year, now.month, now.day, 9, 0, 0)
     end_date = start_date + timedelta(days=30)
@@ -58,9 +61,10 @@ def select_appt():
     timeslots = []
     for i in range(1, timedelta(start_date.day, end_date.day).days): #fix this, not filtering appointments properly
         for j in range(8):
-            if db.session.query(Appointment).filter(and_(Appointment.start_time < start_date + timedelta(days=i, hours=j+1), Appointment.start_time > start_date + timedelta(days=i, hours=j-1))).all() != None:
-                pass
-            else:
+            if db.session.query(Appointment).filter(and_(
+                datetime(Appointment.start_time).hour == datetime(start_date + timedelta(days=i, hours=j)).hour,
+                datetime(Appointment.start_time).day == datetime(start_date + timedelta(days=i, hours=j)).day
+                )).first() == None:
                 timeslots.append(start_date + timedelta(days=i, hours=j))
-
-    return render_template('calendar.html', timeslots=timeslots)
+     """
+    return render_template('GUIcalendar.html', weekdays=weekdays, daytimes=daytimes)
