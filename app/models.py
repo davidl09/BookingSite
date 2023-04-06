@@ -17,4 +17,7 @@ class Appointment(db.Model):
     def __repr__(self):
         return '<Appointment ID: {}, First Name: {}, Start Time/Date: {}>'.format(self.id, self.first_name, datetime.strftime(self.start_time, "%Y-%m-%d_%H:%M"))
     
+"""class AdminUser(db.Model):
+    username = db.Column(db.string)"""
+    
 

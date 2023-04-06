@@ -16,14 +16,13 @@
         display: grid;
         padding-right: 20%;
         padding-left: 20%;
-        padding-top: 2%;
         grid-template-columns: repeat(7, 1fr);
-        grid-template-rows: 1 1fr repeat(5, 4fr);
+        grid-template-rows: 3fr repeat(5, 5fr);
     }
     .calendar .header {
         border: none;
-        font-size: large;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: x-large;
+        text-decoration-color: grey;
         background-color: lightgray;
     }
     .calendar .grid-item {
@@ -41,23 +40,25 @@
 
 <div class="content">
     <div>
-        <h3>Please select a day</h3>
-        <div>
-            {{ months[start_time.month - 1] }}
-        </div>
+        <h2>Please select a day</h2>
+        <h3>{{ months[date_nums[0].month - 1] }}</h3>
         <div class="calendar">
             {% for i in range(7) %} 
             {% if i == 0 %} 
-                <div class="header" style="border-top-left-radius: 6%; border-bottom-left-radius: 6%;">{{ weekdays[(i+6)%6] }}</div>
+                <div class="header" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;">{{ weekdays[(i+6)%6] }}</div>
             {% elif i == 6 %} 
-                <div class="header" style="border-top-right-radius: 6%; border-bottom-right-radius: 6%;">{{ weekdays[(i+6)%6] }}</div>
+                <div class="header" style="border-top-right-radius: 15px; border-bottom-right-radius: 15px;">{{ weekdays[(i+6)%6] }}</div>
             {% else %} 
                 <div class="header">{{ weekdays[(i+6)%6] }}</div>
             {% endif %}
             
             {% endfor %}
             {% for i in range(35) %} 
-                <div class="grid-item" data-datetime="{{ date_nums[i] }}" onclick="redirect(this)">{{ date_nums[i].day }}</div>
+                {% if date_nums[i] < start_time %} 
+                <div class="grid-item" style="background-color: darkslategray;"></div>
+                {% else %}
+                <div class="grid-item" data-datetime="{{ date_nums[i] }}" onclick="redirect(this)" style="{{ 'background-color: lightgreen' if date_nums[i] == start_time }}">{{ date_nums[i].day }}</div>
+                {% endif %}
             {% endfor %} 
         </div>
 

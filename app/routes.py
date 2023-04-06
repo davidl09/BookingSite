@@ -50,7 +50,9 @@ def contact():
 def select_appt_time():
     app_day = datetime.strptime(request.args.get('datetime'), "%Y-%m-%d %H:%M:%S")
     appt_times = [datetime(year=app_day.year, month=app_day.month, day=app_day.day, hour=i, minute=j) for i in range(9, 17) for j in range(0, 60, 15)]
-    return render_template('calendar_day.html', daytimes=appt_times)
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+    return render_template('calendar_day.html', daytimes=appt_times, months=months)
 
 @app.route('/appointments', methods=['GET', 'POST'])
 def appt_select_day():
