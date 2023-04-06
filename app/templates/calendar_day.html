@@ -5,17 +5,18 @@
        
         .calendar {
             border: none;
-            height: 900px;
+            height: 600px;
             display: grid;
-            padding-right: 15%;
-            padding-left: 5%;
-            grid-template-columns: repeat(8, 1fr);
+            margin-right: 45%;
+            margin-left: 40%;
+            grid-template-columns: repeat(2, 1fr);
             grid-template-rows: 1 1fr repeat(32, 1fr);
         }
 
         .calendar .grid-item {
-            border-right: 1px dashed gray;
             background-color: rgb(245, 245, 245);
+            overflow: visible;
+            height: auto;
         }
 
         .calendar .header {
@@ -26,13 +27,12 @@
         }
 
         .calendar .date-lead{
-            border-right: 1px dashed gray;
             padding-right: 10%;
-            font-size: medium;
-            font-weight: 500;
-            font-family: 'Times New Roman', Times, serif;
+            font-size: large;
+            overflow: visible;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             text-align: right;
-            height: 21px;
+            height: 5px;
             
         }
 
@@ -45,29 +45,22 @@
         <h2 style="padding: 20px">
             Select your appointment time
         </h2>
-        <div class="calendar">
-            <div class="date-lead" style="border-right: none">{{ day }}</div>
-            {% for day in weekdays %}
-                <div class="header">{{ day }}</div>
-            {% endfor %}
+        <div class="calendar">            
             {% for i in range(32) %}
                 {% if i%4 == 0 %}
-                <div class="date-lead">{{ daytimes[i] }}</div>
+                <div class="date-lead">{{ daytimes[i].strftime('%H:%M') }}</div>
                 {% else %} 
                 <div class="date-lead"></div>
                 {% endif %} 
-                {% for day in range(7) %}
-                    {% if i == 31 or i%4 == 3 %} 
-                        <div class="grid-item" id="grid-item:hover" style="border-bottom: 1px dashed gray"></div>
-                    {% else %}
-                        <div class="grid-item" id="grid-item:hover"></div>
-                    {% endif %}
-                {% endfor %}
+                <div class="grid-item" id="hover" data-datetime="{{ daytimes[i] }}" onclick="redirect(this)"></div>
             {% endfor %}
         </div>
     </div>
 
     <script>
-        
+        function redirect(element){
+        var datetime = element.getAttribute('data-datetime');
+        window.location.href = "{{ url_for('book', datetime='__datetime__') }}".replace('__datetime__', datetime);
+    }
     </script>
 {% endblock %}

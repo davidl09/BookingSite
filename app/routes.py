@@ -46,12 +46,30 @@ def confirmation():
 def contact():
     return render_template('contact.html')
 
-@app.route('/appointments')
-def select_appt():
+@app.route('/appointments/day')
+def select_appt_time():
+    app_day = datetime.strptime(request.args.get('datetime'), "%Y-%m-%d %H:%M:%S")
+    appt_times = [datetime(year=app_day.year, month=app_day.month, day=app_day.day, hour=i, minute=j) for i in range(9, 17) for j in range(0, 60, 15)]
+    return render_template('calendar_day.html', daytimes=appt_times)
+
+@app.route('/appointments', methods=['GET', 'POST'])
+def appt_select_day():
+
     now = datetime.now()
+
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    daytimes = [datetime.strftime(datetime.combine(now, time(hour=(9+i//4), minute=(15*(i%4)))), "%H:%M") for i in range(32)]
-    """
+    weekdays = [weekday[:1] for weekday in weekdays]
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+    start_time=datetime(now.year, month=now.month, day=now.day + 1, hour=9, minute=0)
+    cal_start_date = start_time - timedelta(days=start_time.weekday())
+
+    date_nums = [cal_start_date + timedelta(days=i) for i in range(35)]
+
+    return render_template('calendar_month.html', start_time=start_time, weekdays=weekdays, date_nums=date_nums, months=months)
+
+
+"""
     now = datetime.now()
     start_date = datetime(now.year, now.month, now.day, 9, 0, 0)
     end_date = start_date + timedelta(days=30)
@@ -67,4 +85,3 @@ def select_appt():
                 )).first() == None:
                 timeslots.append(start_date + timedelta(days=i, hours=j))
      """
-    return render_template('GUIcalendar.html', weekdays=weekdays, daytimes=daytimes)

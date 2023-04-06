@@ -1,0 +1,67 @@
+{% extends 'base.html' %} 
+
+{% block page_content %} 
+
+<script>
+    function redirect(element){
+        var datetime = element.getAttribute('data-datetime');
+        window.location.href = "{{ url_for('select_appt_time', datetime='__datetime__') }}".replace('__datetime__', datetime);
+    }
+</script>
+
+<style>
+    .calendar{
+        border: none;
+        height: 600px;
+        display: grid;
+        padding-right: 20%;
+        padding-left: 20%;
+        padding-top: 2%;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: 1 1fr repeat(5, 4fr);
+    }
+    .calendar .header {
+        border: none;
+        font-size: large;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        background-color: lightgray;
+    }
+    .calendar .grid-item {
+        border-radius: 15px;
+        border: 1px solid  gray;
+        padding: 5%;
+        margin: 1%;
+        text-align: left;
+        background-color: rgb(245, 245, 245);
+    }
+    .calendar .grid-item:hover{
+        background-color: gray;
+    }
+</style>
+
+<div class="content">
+    <div>
+        <h3>Please select a day</h3>
+        <div>
+            {{ months[start_time.month - 1] }}
+        </div>
+        <div class="calendar">
+            {% for i in range(7) %} 
+            {% if i == 0 %} 
+                <div class="header" style="border-top-left-radius: 6%; border-bottom-left-radius: 6%;">{{ weekdays[(i+6)%6] }}</div>
+            {% elif i == 6 %} 
+                <div class="header" style="border-top-right-radius: 6%; border-bottom-right-radius: 6%;">{{ weekdays[(i+6)%6] }}</div>
+            {% else %} 
+                <div class="header">{{ weekdays[(i+6)%6] }}</div>
+            {% endif %}
+            
+            {% endfor %}
+            {% for i in range(35) %} 
+                <div class="grid-item" data-datetime="{{ date_nums[i] }}" onclick="redirect(this)">{{ date_nums[i].day }}</div>
+            {% endfor %} 
+        </div>
+
+    </div>
+</div>
+
+{% endblock %} 

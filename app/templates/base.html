@@ -18,7 +18,7 @@
         }
         /* Add styles for hiding the menu bar */
         .hide-menu-bar {
-            transform: translateY(-100%);
+            transform: translateY(-80%);
         }
         img {
             max-height: 150px;
@@ -32,6 +32,12 @@
             margin: 200px auto;
             padding-top: 20px;
             text-align: center;
+        }
+        .bottom-menu{
+            background-color: lightblue;
+            width: 100%;
+            height: 220px;
+            position: relative;
         }
     </style>
 {% endblock %}
@@ -50,7 +56,6 @@
     <main>
         {% block page_content %}{% endblock %}
     </main>
-    <!-- Add a script tag to include the JavaScript code for the sliding menu bar -->
     <script>
         // Get the menu bar element
         var menuBar = document.getElementById('menu-bar');
@@ -68,7 +73,6 @@
                 // If the user scrolled up, remove the "hide-menu-bar" class to show the menu bar
                 menuBar.classList.remove('hide-menu-bar');
             }
-            // Update the last scroll position
             lastScrollPosition = currentScrollPosition;
         });
     </script>
