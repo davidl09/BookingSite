@@ -59,36 +59,35 @@
     background-color: #3e8e41;
   }
 </style>
-<div class="content">
-  <h1>Available Appointments</h1>
-  <table id="appointments-table">
-    <tr>
-      <th>Date</th>
-      <th>Time</th>
-      <th>Availability</th>
-    </tr>
-    {% set maxslot = 0 %}
-    {% for timeslot in timeslots %}
-      {% set maxslot = maxslot + 1 %}
-      {% if maxslot > 10 %}
-        <tr class="appointment-row" style="display: none;">
-          <td>{{ timeslot.date()|humanize_naturalday() }}</td>
-          <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
-          <td><a href="{{ url_for('book', start_datetime=timeslot.strftime('%Y-%m-%d_%H:%M'))}}">Available</a></td>
-        </tr>
-      {% else %}
-        <tr class="appointment-row">
-          <td>{{ timeslot.date()|humanize_naturalday() }}</td>
-          <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
-          <td><a href="{{ url_for('book', start_datetime=timeslot.strftime('%Y-%m-%d_%H:%M'))}}">Available</a></td>
-        </tr>
-      {% endif %}
-    {% endfor %}
-  </table>
-  <div class="expand-button">
-    <button id="expand">Show more appointments</button>
-    <button id="hide" style="display: none">Hide appointments</button>
-  </div>
+
+<h1>Available Appointments</h1>
+<table id="appointments-table">
+  <tr>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Availability</th>
+  </tr>
+  {% set maxslot = 0 %}
+  {% for timeslot in timeslots %}
+    {% set maxslot = maxslot + 1 %}
+    {% if maxslot > 10 %}
+      <tr class="appointment-row" style="display: none;">
+        <td>{{ timeslot.date()|humanize_naturalday() }}</td>
+        <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
+        <td><a href="{{ url_for('book', start_datetime=timeslot.strftime('%Y-%m-%d_%H:%M'))}}">Available</a></td>
+      </tr>
+    {% else %}
+      <tr class="appointment-row">
+        <td>{{ timeslot.date()|humanize_naturalday() }}</td>
+        <td>{{ timeslot.time()|humanize_naturaltime() }}</td>
+        <td><a href="{{ url_for('book', start_datetime=timeslot.strftime('%Y-%m-%d_%H:%M'))}}">Available</a></td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+</table>
+<div class="expand-button">
+  <button id="expand">Show more appointments</button>
+  <button id="hide" style="display: none">Hide appointments</button>
 </div>
 <script>
 var rowsShown = 10;

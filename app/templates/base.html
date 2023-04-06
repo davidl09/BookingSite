@@ -10,6 +10,7 @@
             width: 100%;
             background-color: lavender;
             transition: transform 0.7s;
+            max-height: 20vh;
         }
         #menu-bar nav ul li {
             display: inline-block;
@@ -29,14 +30,16 @@
         }
         .content{
             width: 70%;
-            margin: 200px auto;
-            padding-top: 20px;
+            min-height: 55vh;
+            margin: auto;
+            margin-top: 22vh;
+            padding-bottom: 25vh;
             text-align: center;
         }
         .bottom-menu{
             background-color: lightblue;
             width: 100%;
-            height: 220px;
+            height: 20vh;
             position: relative;
         }
     </style>
@@ -54,18 +57,24 @@
         </nav>
     </header>
     <main style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-        {% block page_content %}{% endblock %}
+        <div class="content">
+            {% block page_content %}
+            {% endblock %}
+        </div>
+        <div class="bottom-menu">
+
+        </div>
+        
     </main>
     <script>
-        // Get the menu bar element
         var menuBar = document.getElementById('menu-bar');
-        // Set a variable to track the last scroll position
+
         var lastScrollPosition = 0;
-        // Add an event listener for the scroll event
+
         window.addEventListener('scroll', function() {
-            // Get the current scroll position
+
             var currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-            // Check if the user scrolled down
+
             if (currentScrollPosition > lastScrollPosition) {
                 // If the user scrolled down, add the "hide-menu-bar" class to hide the menu bar
                 menuBar.classList.add('hide-menu-bar');

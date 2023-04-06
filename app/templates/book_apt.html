@@ -15,48 +15,46 @@
 
     }
 </style>
-<div class="content">
-    <h1>Enter your information</h1>
-    <form action="", method="post">
-        {{ form.csrf_token }}
-        <p>
-            {{ form.first_name.label }}<br>
-            {{ form.first_name(size=32) }}<br>
-            {% for error in form.first_name.errors %} 
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %} 
-        </p>
-        <p>
-            {{ form.last_name.label }}<br>
-            {{ form.last_name(size=32)}}<br>
-            {% for error in form.last_name.errors %} 
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %} 
-        </p>
-        <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=32) }}<br>
-            {% for error in form.email.errors %} 
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %} 
-        </p>
-        <p>
-            {{ form.phone_number.label }}<br>
-            {{ form.phone_number(size=32) }} 
-            {% for error in form.first_name.errors %} 
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %} 
-        </p>
-        <p>{{ form.submit() }}</p>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-    </form>
-</div>
+<h1>Enter your information</h1>
+<form action="", method="post">
+    {{ form.csrf_token }}
+    <p>
+        {{ form.first_name.label }}<br>
+        {{ form.first_name(size=32) }}<br>
+        {% for error in form.first_name.errors %} 
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %} 
+    </p>
+    <p>
+        {{ form.last_name.label }}<br>
+        {{ form.last_name(size=32)}}<br>
+        {% for error in form.last_name.errors %} 
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %} 
+    </p>
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(size=32) }}<br>
+        {% for error in form.email.errors %} 
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %} 
+    </p>
+    <p>
+        {{ form.phone_number.label }}<br>
+        {{ form.phone_number(size=32) }} 
+        {% for error in form.first_name.errors %} 
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %} 
+    </p>
+    <p>{{ form.submit() }}</p>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</form>
 {% endblock %}

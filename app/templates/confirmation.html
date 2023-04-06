@@ -8,20 +8,18 @@
     }
 </style>
 
-<div class="content">
-    <h3>Success! You have booked you appointment!</h3>
-    <h4>Your appointment details:</h4>
-    <ul>
-        <li>
-            Appointment time: {{ timeslot.time()|humanize_naturaltime }}
-        </li>
-        <li>
-            Appointment date: {{ timeslot.date()|humanize_naturalday }}
-        </li>
-        <li>
-            Location: *insert location*
-        </li>
-    </ul>
-</div>
+<h3>Success! You have booked you appointment!</h3>
+<h4>Your appointment details:</h4>
+<ul>
+    <li>
+        Appointment time: {{ timeslot.time()|humanize_naturaltime }}
+    </li>
+    <li>
+        Appointment date: {{ timeslot.date()|humanize_naturalday }}
+    </li>
+    <li>
+        Location: *insert location*
+    </li>
+</ul>
 
 {% endblock %} 

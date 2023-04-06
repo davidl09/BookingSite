@@ -1,5 +1,5 @@
 # database files and venv
-webdev/
+bookingvenv/
 migrations/
 app.db
 

@@ -12,7 +12,7 @@
 <style>
     .calendar{
         border: none;
-        height: 600px;
+        height: 60vh;
         display: grid;
         padding-right: 20%;
         padding-left: 20%;
@@ -21,7 +21,7 @@
     }
     .calendar .header {
         border: none;
-        font-size: x-large;
+        font-size: large;
         text-decoration-color: grey;
         background-color: lightgray;
     }
@@ -38,31 +38,32 @@
     }
 </style>
 
-<div class="content">
-    <div>
-        <h2>Please select a day</h2>
-        <h3>{{ months[date_nums[0].month - 1] }}</h3>
-        <div class="calendar">
-            {% for i in range(7) %} 
-            {% if i == 0 %} 
-                <div class="header" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;">{{ weekdays[(i+6)%6] }}</div>
-            {% elif i == 6 %} 
-                <div class="header" style="border-top-right-radius: 15px; border-bottom-right-radius: 15px;">{{ weekdays[(i+6)%6] }}</div>
-            {% else %} 
-                <div class="header">{{ weekdays[(i+6)%6] }}</div>
-            {% endif %}
-            
-            {% endfor %}
-            {% for i in range(35) %} 
-                {% if date_nums[i] < start_time %} 
-                <div class="grid-item" style="background-color: darkslategray;"></div>
-                {% else %}
-                <div class="grid-item" data-datetime="{{ date_nums[i] }}" onclick="redirect(this)" style="{{ 'background-color: lightgreen' if date_nums[i] == start_time }}">{{ date_nums[i].day }}</div>
-                {% endif %}
-            {% endfor %} 
-        </div>
 
+<div>
+    <h2>Please select a day</h2>
+    <h3>{{ months[date_nums[0].month - 1] }}</h3>
+    <div class="calendar">
+        {% for i in range(7) %} 
+        {% if i == 0 %} 
+            <div class="header" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;">{{ weekdays[(i+6)%6] }}</div>
+        {% elif i == 6 %} 
+            <div class="header" style="border-top-right-radius: 15px; border-bottom-right-radius: 15px;">{{ weekdays[(i+6)%6] }}</div>
+        {% else %} 
+            <div class="header">{{ weekdays[(i+6)%6] }}</div>
+        {% endif %}
+        
+        {% endfor %}
+        {% for i in range(35) %} 
+            {% if date_nums[i] < start_time %} 
+            <div class="grid-item" style="background-color: darkslategray;"></div>
+            {% else %}
+            <div class="grid-item" data-datetime="{{ date_nums[i] }}" onclick="redirect(this)" 
+            style="{{ 'background-color: lightgreen' if date_nums[i] == start_time }}">
+            {{ date_nums[i].day }}</div>
+            {% endif %}
+        {% endfor %} 
     </div>
+
 </div>
 
 {% endblock %} 

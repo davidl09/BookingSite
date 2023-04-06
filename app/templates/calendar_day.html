@@ -41,23 +41,22 @@
         }
     
     </style>
-    <div class="content">
-        <h2 style="padding: 20px">
-            Select your appointment time
-        </h2>
-        <h3>
-            {{ months[daytimes[0].month] }}
-        </h3>
-        <div class="calendar">            
-            {% for i in range(32) %}
-                {% if i%4 == 0 %}
-                <div class="date-lead">{{ daytimes[i].strftime('%H:%M') }}</div>
-                {% else %} 
-                <div class="date-lead"></div>
-                {% endif %} 
-                <div class="grid-item" id="hover" data-datetime="{{ daytimes[i] }}" onclick="redirect(this)"></div>
-            {% endfor %}
-        </div>
+    
+    <h2 style="padding: 20px">
+        Select your appointment time
+    </h2>
+    <h3>
+        {{ months[daytimes[0].month] }}
+    </h3>
+    <div class="calendar">            
+        {% for i in range(32) %}
+            {% if i%4 == 0 %}
+            <div class="date-lead">{{ daytimes[i].strftime('%H:%M') }}</div>
+            {% else %} 
+            <div class="date-lead"></div>
+            {% endif %} 
+            <div class="grid-item" id="hover" data-datetime="{{ daytimes[i] }}" onclick="redirect(this)"></div>
+        {% endfor %}
     </div>
 
     <script>
